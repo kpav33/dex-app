@@ -4,6 +4,15 @@ pragma solidity ^0.8.18;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 // Theoretical explanation for how all of this functions work can be found in the notes folder
+// Deployed to 0x104a131e5B39Cf627932ca9659Ef8EDC47818E73
+
+// Deploy script => npx hardhat run scripts/deploy.js --network sepolia
+// After deploying test if everything is working on https://sepolia.etherscan.io/
+// To add liquidity to the Exchange contract we first must approve spending of the TOKEN on the token contract. Do so by using the approve function in the Write Contract tab of the TOKEN contract. Input the Exchange contract address in the spender field and set the desired amount of TOKEN in the amount field.
+// With approval done go to Exchange contract and use the addLiquidity function to add initial liquidity to the contract (remember the ratio of ETH to TOKEN you will set up now, will be also used later on when someone will want to add liquidity to the poool). As a result of this function you receive some ETH TOKEN LP tokens that represent your share of the liquidity pool.
+// With liquidity added we can swap tokens. Use ethToTokenSwap to swap some ETH and recieve TOKEN in return or tokenToEthSwap to swap some TOKEN and receive ETH in return. When executing the function you can pass 0 as the minimal value that you should receive since we are just testing the functionality.
+// Normally, the minimum amount to receive is not set to zero. It is the job of the client (website, app, etc) to provide an estimate on how much tokens the user will receive before they even attempt a swap, and then the user agrees to a slippage percentage. So for example, if I was told to expect 100 TKN back for my swap, and I agree to 5% slippage - that means the minimum I will get is 95% of the original estimated amount i.e. 95 TKN - else the transaction will fail.
+// You can use the removeLiquidity function on the Exchange contract to remove the added liquidity
 
 contract Exchange is ERC20 {
     address public tokenAddress;
